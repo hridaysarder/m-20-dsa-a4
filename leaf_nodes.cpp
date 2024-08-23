@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 class Node
 {
 public:
@@ -56,23 +57,23 @@ Node *input_tree()
     }
     return root;
 }
-
-int count_leaf(Node *root)
+vector<int> v;
+void leaf_node(Node *root)
 {
     if (root == NULL)
-        return 0;
+        return;
     if (root->left == NULL && root->right == NULL)
-        return 1;
-    else
-    {
-        int l = count_leaf(root->left);
-        int r = count_leaf(root->right);
-        return l + r;
-    }
+        v.push_back(root->val);
+
+    leaf_node(root->left);
+    leaf_node(root->right);
 }
 int main()
 {
     Node *root = input_tree();
-    cout << count_leaf(root) << endl;
+    leaf_node(root);
+    sort(v.begin(), v.end(), greater<int>());
+    for (int val : v)
+        cout << val << " ";
     return 0;
 }

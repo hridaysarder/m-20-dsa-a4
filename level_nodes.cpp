@@ -1,5 +1,7 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <queue>
 using namespace std;
+
 class Node
 {
 public:
@@ -55,45 +57,52 @@ Node *input_tree()
     return root;
 }
 
-void print_left(Node *root)
+void level_order(Node *root, int x)
 {
     if (root == NULL)
+    {
+        cout << "Invalid" << endl;
         return;
-    if (root->left)
-    {
-        cout << root->left->val << " ";
-        print_left(root->left);
     }
-    else if (root->right)
+
+    queue<Node *> q;
+    q.push(root);
+
+    int level = 0;
+    while (!q.empty())
     {
-        cout << root->right->val << " ";
-        print_left(root->right);
+        int size = q.size();
+        if (level == x)
+        {
+            while (size--)
+            {
+                Node *f = q.front();
+                q.pop();
+                cout << f->val << " ";
+            }
+            return;
+        }
+
+        while (size--)
+        {
+            Node *f = q.front();
+            q.pop();
+
+            if (f->left)
+                q.push(f->left);
+            if (f->right)
+                q.push(f->right);
+        }
+        level++;
     }
+    cout << "Invalid" << endl;
 }
-
-void print_right(Node *root)
-{
-    if (root == NULL)
-        return;
-    if (root->right)
-    {
-        cout << root->right->val << " ";
-        print_right(root->right);
-    }
-    else if (root->left)
-    {
-        cout << root->left->val << " ";
-        print_right(root->left);
-    }
-}
-
-
-
 
 int main()
 {
     Node *root = input_tree();
-    
-
+    int x;
+    cin >> x;
+    level_order(root, x);
     return 0;
 }
